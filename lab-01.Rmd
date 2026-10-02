@@ -283,10 +283,16 @@ visitors_with_nations %>%
 
 _How many tourist attractions are there in each of the 4 nations? From this, discuss in your group how reliable you think the inter-quartile estimates are._
 
+```{r}
+visitors_with_nations
+```
+
+
 
 ```{r Ex_l}
-#visitors_with_nations %>%
-#  quartile()
+visitors_with_nations %>%
+  group_by(nation)%>%
+  count(nation)
 ```
 
 
@@ -299,18 +305,34 @@ _Within each of the 4 nations, what is the proportion of tourist attractions tha
 
 ```{r Ex_m}
 # Write your code here
+visitors_with_nations %>%
 
+  filter (admission == "Free") %>%
+    count()
 
 ```
 
 
+#An: 128/348= 
+
+
+
 ### Exercise o.
 
-_Calculate the percentage change in visitor admissions from 2021 to 2022. Of the tourist attractions in Scotland, sort into increasing numerical order the types of admission charges based on the mean percentage change in visitor numbers._
+_Calculate the percentage change in visitor admissions from 2021 to 2022 Of the tourist attractions in Scotland, sort into increasing numerical order the types of admission charges based on the mean percentage change in visitor numbers._
 
 ```{r Ex_n}
-# Write your code here
+visitors_with_nations %>%
+   filter (nation == "Scotland") %>%
+     mutate(
+      percentage_change= ((n_2022 - n_2021)/n_2021)*100 
+         ) %>%
 
-
+  group_by(admission) %>%
+  summarise(
+    mean_pct=mean(percentage_change, na.rm=TRUE)
+  ) %>%
+  arrange(mean_pct)
+  
 
 ```
