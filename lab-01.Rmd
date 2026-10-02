@@ -24,7 +24,7 @@ visitors <- read_csv("data/UK-visitor-numbers.csv")
 
 ## Question 1
 
-_How many tourist attractions are there in the data set?_
+_How many tourist attractions are there in the data set?_348
 
 ```{r Q1}
 visitors %>% count()
@@ -37,7 +37,7 @@ _Create a frequency table of the number of tourist attractions in the data set b
 ```{r Ex_a}
 # Delete the comment '#' symbol at the start of the next line and complete the code. 
 
-#visitors %>% count(_____)
+visitors %>% count(region)
 ```
 
 ### Exercise b.
@@ -47,7 +47,7 @@ _Create a frequency table by `admission` and `setting`._
 ```{r Ex_b}
 # Delete the comment '#' symbol at the start of the next line and complete the code.
 
-#visitors %>% count(_____, _____)
+visitors %>% count(admission, setting)
 ```
 
 
@@ -63,6 +63,7 @@ class(visitors$n_2022)
 visitors %>% summarise_all(class)
 ```
 
+# A2: c
 
 
 ## Question 3
@@ -73,14 +74,32 @@ _Which attraction had the most number of visitors in 2022?_
 visitors %>% arrange(desc(n_2022))
 ```
 
+#A3: The Crown Estate, Windsor Great Park
+
+
+
 ### Exercise c.
 
 _What are the top 10 most visited attractions in 2021?_
 ```{r Ex_c}
-#visitors %>% 
-#  arrange(____(____)) %>%
-#  head(n = ____)
+visitors %>% 
+arrange(desc(n_2021)) %>%
+head(n = 10)
 ```
+
+
+#AC: 
+The Crown Estate, Windsor Great Park	
+Royal Botanic Gardens Kew	
+Natural History Museum (South Kensington)	
+RHS Garden Wisley	
+The British Museum	
+Tate Modern	
+Somerset House	
+Science Museum	
+Jeskyns Community Woodland	
+V&A South Kensington
+
 
 ## Question 4
 
@@ -90,24 +109,30 @@ _What is the admission charge for the `"National Museum of Scotland"`?_
 visitors %>% filter(attraction == "National Museum of Scotland")
 ```
 
+#A4: Dobby is free
 
 ### Exercise d.
 
 _Which attraction had exactly 565,772 visitors in 2022?_
 
 ```{r Ex_d}
-#visitors %>% filter(___ == ____)
+visitors %>% filter(n_2022 == 565772)
 ```
+
+#Ad: Knowsley Safari and Knowsley Hall
+
 
 ### Exercise e.
 
 _How many attraction had more than 1 million visitors in 2022?_
 
 ```{r Ex_e}
-#visitors %>% 
-#  filter(____) %>%
-#  count()
+visitors %>% 
+  filter(n_2022 > 1000000) %>%
+  count()
 ```
+
+#Ae: 22
 
 ## Question 5
 
@@ -129,23 +154,27 @@ visitors %>%
 _How many attractions had between 50,000 and 100,000 visitors in 2022?_
 
 ```{r Ex_f}
-#visitors %>% 
-#  ____(
-#    ______,
-#    ______ ) %>%
-#  count()
+visitors %>% 
+  filter(
+    n_2022 > 50000,
+    n_2022 < 100000 ) %>%
+  count()
 ```
+
+#Af: 50
+
 
 ### Exercise g.
 
 _How many regions have more than 50 tourist attraction in the data set? (Hint: You will need to tabulate the data before filtering.)_
 
 ```{r Ex_g}
-#visitors %>% 
-#  _____(region) %>%
-#  filter(______)
+visitors %>% 
+  count(region) %>%
+  filter(n>50)
 ```
 
+#Ag: 1 --> Scotland
 
 
 # Summarising Data
@@ -168,11 +197,11 @@ visitors %>%
 _Perform the same calculation for the 2021 admissions data._
 
 ```{r Ex_h}
-#visitors %>% 
-#  ______(
-#    __________,
-#    __________
-#  )
+visitors %>% 
+  summarise(
+    mean_2021= mean(n_2021, na.rm = TRUE),
+    median_2021= median(n_2021, na.rm = TRUE)
+  )
 ```
 
 All values in the output are `NA`!
@@ -183,7 +212,7 @@ _What does `NA` stand for and why are you getting this as your answer to the pre
 
 **Write your answer here**
 
-
+I solved it, whee. Its because there are NA present in the data, where probably some individual data points were not collected successfully. The missing data stops the function from performing with the available data points.
 
 
 ### Exercise j.
@@ -192,7 +221,7 @@ _Look at the help pages for the `mean()` and `median()` commands to see what the
 
 **Write your answer here**
 
-
+na.rm= TRUE, removes na from the data the function is working with
 
 
 ## Question 7
@@ -213,6 +242,8 @@ visitors %>%
 _Observe in question 6 that the mean statistics across all settings are much larger than the corresponding median statistics. Discuss in your group what this suggests about the data._
 
 **Write your answer here**
+
+
 
 ## Question 8
 
@@ -254,8 +285,8 @@ _How many tourist attractions are there in each of the 4 nations? From this, dis
 
 
 ```{r Ex_l}
-#________ %>%
-#  ______(_______)
+#visitors_with_nations %>%
+#  quartile()
 ```
 
 
